@@ -1,0 +1,11 @@
+md2pdf
+======
+
+Simple wrapper script to create a pdf file from Markdown without leaving temporary files.
+
+Requires pandoc and context.
+
+Usage
+-----
+
+    md2pdf file.txt

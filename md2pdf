@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+	echo "Usage: $1 [file.txt]"
+	exit
+fi
+
+if [ ! -f "$1" ]; then
+	echo "File '$1' does not exist."
+	exit
+fi
+
+NAME=`basename $1 .txt`
+TMPDIR=/tmp/md2pf-$NAME
+
+mkdir -p $TMPDIR
+
+pandoc -s -t context -o $TMPDIR/$NAME.tex $1
+
+(cd $TMPDIR; texexec $NAME.tex)
+
+cp $TMPDIR/$NAME.pdf .
