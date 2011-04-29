@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $# -lt 1 ]; then
-	echo "Usage: $0 file.txt"
+	echo "Usage: ${0##*/} FILE.txt [arguments to pandoc]"
 	exit
 fi
 
@@ -10,13 +10,16 @@ if [ ! -f "$1" ]; then
 	exit
 fi
 
+SOURCE=$1
 NAME=`basename $1 .txt`
 TMPDIR=/tmp/md2pf-$NAME
 
+shift 1
+
 mkdir -p $TMPDIR
 
-pandoc -s -t context -o $TMPDIR/$NAME.tex $1
+pandoc -s -t context $@ -o $TMPDIR/$NAME.tex $SOURCE
 
-(cd $TMPDIR; texexec $NAME.tex)
+(cd $TMPDIR; texexec $NAME.tex > /dev/null)
 
 cp $TMPDIR/$NAME.pdf .
